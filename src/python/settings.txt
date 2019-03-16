@@ -1,16 +1,8 @@
-bored eye notifications
-2
-activity notifications
-3
-distance from the monitor notifications
 0
-drink water reminders
 0
-remind before lunchbreak
 0
-remind me to imrove posture
-60
-remind me to do gymnastics
 0
-notify me when there are 30 minutes left of the work day
-5
+0
+0
+0
+0

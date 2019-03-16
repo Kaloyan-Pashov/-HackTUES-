@@ -31,7 +31,6 @@ def shut_down():
     f = open("settings.txt", 'w')
 
     for x in sets.keys():
-        f.write(x + '\n')
         f.write(str(sets[x]) + '\n')
 
 
@@ -60,8 +59,6 @@ while 1:
     try:
         window.update()
     except TclError:
-        pass
+        break
 
     time.sleep(0.01)
-
-window.mainloop()
