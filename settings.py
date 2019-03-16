@@ -4,48 +4,62 @@ import time
 
 window = Tk()
 window.title("GUI")
-window.geometry('400x200')
-window.resizable(width = False, height = False)
-
-bored_eye = BooleanVar(value = None)
-act_noti = BooleanVar(value = None)
-dist_bool = BooleanVar(value = None)
-bored_eye_time = None
-act_noti_time = None
-dist_bool_time = None
+window.geometry('400x275')
+window.resizable(width=False, height=False)
 
 
-Label(window, text = "Settings:", fg = "black", width = 20).pack()
+class Setting:
+    def __init__(self, text, master):
+        self.var = BooleanVar(value=None)
+        self.time = None
+        self.text = text
+        self.master = master
+        Checkbutton(self.master, text=self.text, variable=self.var).pack()
+
+    def ask(self):
+        if self.var.get() and not self.time:
+            self.time = simpledialog.askinteger("ask", "How much time between " + self.text + "? (in minutes)")
+        if not self.var.get():
+            self.time = None
+        
+    def _close(self):
+        self.destroy()
+        
+        
+          
+
+def shut_down():
+    window.destroy()
+
+Label(window, text="Settings:", fg="black", width=20).pack()
 Label(window, text="Notifications:").pack(anchor='w')
-Checkbutton(window, text="Bored Eye notifications", variable = bored_eye).pack()
-Checkbutton(window, text = " Activity notifications   ", variable = act_noti).pack()
-Checkbutton(window, text = "Distance from the monitor notifications", variable = dist_bool).pack()
+bored_eye = Setting("bored eye notifications", window)
+act_noti = Setting("activity notifications", window)
+dist_bool = Setting("distance from the monitor notifications", window)
+drink_w = Setting("drink water reminders", window)
+lunch_br = Setting("remind before lunchbreak", window)
+post_r = Setting("remind me to imrove posture", window)
+gym_r = Setting("remind me to do gymnastics", window)
+end_r = Setting("notify me when there are 30 minutes left of the work day", window)
+
+settings = [bored_eye, act_noti, dist_bool, drink_w, lunch_br, post_r, gym_r, end_r]
 
 
-
-Button(window, text = "START", fg = "black", bg = 'blue').pack(side = 'right', fill = 'x')
+Button(window, text="START", fg="black", command = shut_down).pack(side='right', fill='x')
 
 while 1:
-    if bored_eye.get() == True and not bored_eye_time:
-        bored_eye_time = simpledialog.askinteger("", "How much time between notifications? (in minutes)")
+    for i in settings:
+        i.ask()
         
-    if act_noti.get() == True and not act_noti_time:
-        act_noti_time =  simpledialog.askinteger("", "How much time between notifications? (in minutes)")
+    try:
+        window.update()
+    except TclError:
+        pass
         
-    if dist_bool.get() == True and not dist_bool_time:
-        dist_bool_time = simpledialog.askinteger("", "How much time between notifications? (in minutes)") 
-
-    if bored_eye.get() == False:
-        bored_eye_time = None
-        
-    if act_noti.get() == False:
-        act_noti_time = None
-        
-    if dist_bool.get() == False:
-        dist_bool_time = None
-        
-    window.update()
     time.sleep(0.01)
+
+window.mainloop()
+time.sleep(0.01)
     
 
 
@@ -53,4 +67,3 @@ while 1:
 
 
 window.mainloop()
-
