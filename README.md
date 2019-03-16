@@ -1,5 +1,5 @@
 # -HackTUES-
-Проект: TESSA - Technology Enhanced Seeing Smiling Advise
+Проект: TESSA - Technology Enhanced Seeing Smiling Adviser
 
 Цел: Подобряване на преживяването на хората, които използват много време компютър. Например: ученици и служители в IT сектора. 
 
