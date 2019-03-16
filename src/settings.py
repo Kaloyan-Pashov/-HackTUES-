@@ -4,9 +4,16 @@ import time
 
 window = Tk()
 window.title("GUI")
-window.geometry('400x275')
+window.geometry('400x300')
 window.resizable(width=False, height=False)
 sets = {}
+set = []
+
+f = open("settings.txt", 'r')
+for x in f.readlines():
+    set.append(int(x))
+
+f.close()
 
 
 class Setting:
@@ -15,8 +22,11 @@ class Setting:
         self.time = 0
         self.text = text
         self.master = master
-        Checkbutton(self.master, text=self.text, variable=self.var).pack()
-        sets[self.text] = self.time
+        Checkbutton(self.master, text=self.text, variable=self.var).pack(anchor='w')
+        self.time = set.pop(0)
+        if self.time != 0:
+            self.var.set(True)
+            sets[self.text] = self.time
 
     def ask(self):
         if self.var.get() and not self.time:
@@ -24,14 +34,23 @@ class Setting:
             sets[self.text] = self.time
         if not self.var.get():
             self.time = 0
+            sets[self.text] = self.time
+
+    def uncheck(self):
+        self.var.set(False)
 
 
 def shut_down():
-    window.destroy()
-    f = open("settings.txt", 'w')
+        window.destroy()
+        f = open("settings.txt", 'w')
 
-    for x in sets.keys():
-        f.write(str(sets[x]) + '\n')
+        for x in sets.keys():
+            f.write(str(sets[x]) + '\n')
+
+
+def uncheck():
+        for x in settings:
+            x.uncheck()
 
 
 Label(window, text="Settings:", fg="black", width=20).pack()
@@ -46,7 +65,7 @@ gym_r = Setting("remind me to do gymnastics", window)
 end_r = Setting("notify me when there are 30 minutes left of the work day", window)
 
 settings = [bored_eye, act_noti, dist_bool, drink_w, lunch_br, post_r, gym_r, end_r]
-
+Button(window, text='Uncheck all', fg='black', command=uncheck).pack(anchor='w')
 Button(window, text="START", fg="black", command=shut_down).pack(side='right', fill='x')
 
 
