@@ -3,8 +3,6 @@ from tkinter import simpledialog
 import subprocess
 from win10toast import ToastNotifier
 import time
-import sys
-
 
 
 window = Tk()
@@ -56,10 +54,8 @@ class Setting:
     def uncheck(self):
         self.var.set(False)
 
-   # def run(self):
-
-
-
+    def run(self):
+        return time.time()
 
 
 def shut_down():
@@ -80,8 +76,8 @@ Label(window, text="Notifications:").pack(anchor='w')
 
 bored_eye = Setting("Bored eye notifications", window,
                     "Your eyes are bored! You need to rest them for at least 5 minutes!")
-act_noti = Setting("Activity notifications", window,
-                   "You are set as unactive until mouse moving detection!")
+act_noti = Setting("Smiling notifications", window,
+                   "You need to smile more! It gives you the hormone of happiness!")
 dist_bool = Setting("Distance from the monitor notifications", window,
                     "Stay a bit more far from the monitor!")
 drink_w = Setting("Drink water reminders", window,
@@ -94,9 +90,9 @@ gym_r = Setting("Do gymnastics reminder", window,
                 "Do some gymnastics! You need to move!")
 end_r = Setting("End of the work day reminder", window,
                 "End of the day! You need to rest at home", absolute=True)
-custom = Setting("custom notification", window, "", True)
 
-settings = [bored_eye, act_noti, dist_bool, drink_w, lunch_br, post_r, gym_r, end_r, custom]
+
+settings = [bored_eye, act_noti, dist_bool, drink_w, lunch_br, post_r, gym_r, end_r]
 
 Button(window, text='Uncheck all', fg='black', command=uncheck).pack(anchor='w')
 Button(window, text="START", fg="black", command=shut_down).pack(side='right', fill='x')
@@ -111,21 +107,6 @@ while 1:
         break
 
     time.sleep(0.01)
-
-j = i = 0
-print(len(settings))
-#while i < len(settings):
-#    print('    ' + str(settings[i].time))
-#    print(settings[j].time)
-#    if settings[j].time == 0:
-#        del settings[j]
-#        i += 1
-#    else:
-#        j+=1
-#    i += 1
-#    #j += 1
-#for i in settings:
-#    print(i.text)
 
 
 def track():
@@ -146,22 +127,30 @@ for i in settings:
 
 computeroff = 0
 computeron = 0
+t = time.time()
 while 1:
     time.sleep(sleeping)
-    print("computeroff is", computeroff)
-    print("computeron is ", computeron)
+    print("time off computer is %s seconds"% computeroff)
+    print("time on computer is %s seconds"% computeron)
+    print("absolute time %s "% time.ctime())
     if track()/1000 > 5*60:
         computeroff += sleeping
     computeron += sleeping
     for i in notifications:
-        print("j is ", i.j)
-        print("j * i.time is ", i.j*(i.time))
-        if i.j*(i.time)*60 < computeron:
-            print("showing notification......")
-            toaster = ToastNotifier()
-            toaster.show_toast(i.text, i.notifier, duration=10)
+        if i.absolute:
+            ct = time.time()
+            if int(ct - t) > i.j*i.time*60:
+                print("showing notification......")
+                toaster = ToastNotifier()
+                toaster.show_toast(i.text, i.notifier, duration=10)
+                i.j += 1
 
-            i.j += 1
+        else:
+            if i.j*(i.time)*60 < computeron:
+                print("showing notification......")
+                toaster = ToastNotifier()
+                toaster.show_toast(i.text, i.notifier, duration=10)
+                i.j += 1
     print("#######################################################")
 
 
