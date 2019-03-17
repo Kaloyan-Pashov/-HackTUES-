@@ -15,9 +15,12 @@
 
 
 
+Начин на използване:
+За да стартирате програмата изпълнете командата <python settings.py> в папката <source>.
+Ако желаете да възстановите настройките по подразбиране изпълнете командата <python writefile.py> в папката <source>.
 
-
-
+Линк към презентацията на проекта:
+https://docs.google.com/presentation/d/1FsGV6Iuv7Ahb2yGPDFra-1LxNfSJ_SZzcBXxdNw-46Y/edit?usp=sharing
 
 
 
